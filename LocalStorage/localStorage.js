@@ -51,7 +51,10 @@ localStorage.setItem("players", JSON.stringify(team)) */
 
 
 
-let players=[
+
+/* partie 4 */
+
+/* let players=[
         {
             id : 1,
             name : "Aamir"
@@ -71,10 +74,61 @@ team.push({
     id: 4,
     name : "Ronaldo"
 },);
+team[1]={
+    id: 2,
+    name : "messi"
+}
 
-team.find
-
-console.log(team);
 localStorage.setItem("players", JSON.stringify(team));
 
 
+let temp = JSON.parse(localStorage.getItem("players"));
+let find = temp.find(o=>o.id == 3);
+let i = temp.indexOf(find);
+
+temp.splice(i,1);
+localStorage["players"] = JSON.stringify(temp);
+
+console.log(JSON.parse(localStorage["players"])); */
+
+
+/* partie 5 */
+
+
+
+const form = document.forms["addForm"]
+form.addEventListener("submit",(e)=>{
+    e.preventDefault()
+    formRead()
+})
+function formRead(){
+    let person = JSON.parse(localStorage.getItem("person")) || [];
+    person.push({
+        name : `${form.fullname.value}`,
+        age : `${form.age.value}`
+    },);
+    localStorage["person"] = JSON.stringify(person);    
+    form.reset();
+    formDisplay();
+}
+
+const block = document.getElementById("displaySection")
+function formDisplay(){
+    let person = JSON.parse(localStorage.getItem("person"));
+    block.innerHTML =
+        `<tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>`;
+        
+    person.forEach((person) => {
+        block.innerHTML +=
+            `
+                <tr>
+                    <td>${person.name}</td>
+                    <td>${person.age}</td>
+                </tr>
+            `
+    })
+    
+}
