@@ -112,23 +112,34 @@ function formRead(){
     formDisplay();
 }
 
-const block = document.getElementById("displaySection")
+const table = document.getElementById("displaySection")
 function formDisplay(){
     let person = JSON.parse(localStorage.getItem("person"));
-    block.innerHTML =
-        `<tr>
-            <th>Name</th>
-            <th>Age</th>
-        </tr>`;
+    const tBody = table.querySelector("tbody");
+    tBody.innerHTML="";
+
         
     person.forEach((person) => {
-        block.innerHTML +=
-            `
-                <tr>
-                    <td>${person.name}</td>
-                    <td>${person.age}</td>
-                </tr>
-            `
-    })
+        let row = tBody.insertRow();
+        let cell1 = row.insertCell();
+        let cell2 = row.insertCell();
+        let cell3 = row.insertCell();
+        cell1.innerText = `${person.name}`;
+        cell2.innerText = `${person.age}`;
+        cell3.innerHTML = `<button owner ="${person.name}" class="deleteBtn">Delete</button>`
+    });
     
+    document.querySelectorAll(".deleteBtn").forEach((Btn)=>{
+        Btn.addEventListener("click",()=>deleteFunction(Btn));
+    });
+}
+
+function deleteFunction(Btn){
+    let filter = Btn.getAttribute("owner");    
+    let person = JSON.parse(localStorage.getItem("person"));
+    let find = person.find(o => o.name == filter);
+    let address = person.indexOf(find);
+    person.splice(address,1);
+    localStorage["person"] = JSON.stringify(person);
+    formDisplay();
 }
