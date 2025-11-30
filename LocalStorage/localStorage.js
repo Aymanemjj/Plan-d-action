@@ -102,7 +102,7 @@ form.addEventListener("submit",(e)=>{
     formRead()
 })
 function formRead(){
-    let person = JSON.parse(localStorage.getItem("person")) || [];
+    let person = localstorageGet("person")
     person.push({
         name : `${form.fullname.value}`,
         age : `${form.age.value}`
@@ -114,7 +114,7 @@ function formRead(){
 
 const table = document.getElementById("displaySection")
 function formDisplay(){
-    let person = JSON.parse(localStorage.getItem("person"));
+    let person = localstorageGet("person");
     const tBody = table.querySelector("tbody");
     tBody.innerHTML="";
 
@@ -136,10 +136,28 @@ function formDisplay(){
 
 function deleteFunction(Btn){
     let filter = Btn.getAttribute("owner");    
-    let person = JSON.parse(localStorage.getItem("person"));
+    let person = localstorageGet("person");
     let find = person.find(o => o.name == filter);
     let address = person.indexOf(find);
     person.splice(address,1);
     localStorage["person"] = JSON.stringify(person);
     formDisplay();
+}
+
+function localstorageGet(key){
+    try {
+        const data = localStorage.getItem(key);
+        if(data === null){
+            return [];
+        }else{
+            let parse = JSON.parse(data)
+            return parse;
+        }
+        
+
+    } catch (error) {
+        console.log(`error handeling key: ${key}. reseting`);
+        return [];
+        
+    }
 }
